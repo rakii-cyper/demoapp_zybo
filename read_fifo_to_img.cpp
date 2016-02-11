@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
   int cols = 0;
   int rows = 0;
-  Mat output = Mat::zeros(Size(640, 480), CV_8UC1);
+  Mat output = Mat::zeros(Size(640, 480), CV_8UC3);
   while (cols < 640 && rows < 480) {
     int len = 0;
     rc = read(fd, buf, sizeof(buf));
@@ -70,10 +70,10 @@ int main(int argc, char *argv[]) {
     cout << "Number of bytes read: " << rc;
     while (len < rc) {
       Vec3b &intensity = output.at<Vec3b>(rows, cols);
-      for(int k = 0; k < 1; k++) {
+      for(int k = 0; k < 3; k++) {
         intensity.val[k] = int(buf[len + k]);
       }
-      // cout << "reading [" << cols << ", " << rows << "]" << endl;
+      cout << "reading [" << cols << ", " << rows << "]" << endl;
       rows++;
       len = len + 4;
       if (rows == 480) {
@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
         if (cols == 640) break;
       }
     }
+  imwrite("output.jpg", output);
   }
   imwrite("output.jpg", output);
   cout << "DONE!";
