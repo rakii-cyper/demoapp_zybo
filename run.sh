@@ -1,2 +1,2 @@
-./fifo_to_cam /dev/xillybus_read_32 &
-./cam_to_fifo /dev/xillybus_write_32
+./fifo_to_cam /dev/xillybus_read_frame &
+./cam_to_fifo /dev/xillybus_write_frame
