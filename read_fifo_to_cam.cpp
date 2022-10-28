@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
       for(int k = 0; k < 3; k++) {
         intensity.val[k] = int(buf[len + k]);
       }
-      cout << "reading [" << cols << ", " << rows << "]" << endl;
+      // cout << "reading [" << cols << ", " << rows << "]" << endl;
       cols++;
       len = len + 4;
       if (cols == 640) {
