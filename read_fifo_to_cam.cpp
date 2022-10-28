@@ -30,7 +30,7 @@ void allwrite(int fd, unsigned char *buf, int len);
 int main(int argc, char *argv[]) {
 
   int fd, rc;
-  unsigned char buf[1228801];
+  unsigned char buf[1228800];
   
 
   if (argc!=2) {
@@ -67,15 +67,15 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Reached read EOF.\n");
       exit(0);
     }
-
+    cout << "Number of bytes read: " << rc;
     while (len < rc) {
-      len = len + 4;
       Vec3b &intensity = output.at<Vec3b>(rows, cols);
       for(int k = 0; k < 3; k++) {
         intensity.val[k] = int(buf[len + k]);
       }
       cout << "reading [" << cols << ", " << rows << "]" << endl;
       cols++;
+      len = len + 4;
       if (cols == 640) {
         cols = 0;
         rows++;
