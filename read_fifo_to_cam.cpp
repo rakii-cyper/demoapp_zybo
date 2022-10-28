@@ -31,8 +31,10 @@ int main(int argc, char *argv[]) {
 
   int fd, rc;
   unsigned char buf[1228800];
+  int frame_width = 640;
+  int frame_height = 480;
+  VideoWriter video("outcpp.avi", cv::VideoWriter::fourcc('M','J','P','G'), 10, Size(frame_width, frame_height));
   
-
   if (argc!=2) {
     fprintf(stderr, "Usage: %s devfile\n", argv[0]);
     exit(1);
@@ -48,44 +50,46 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  int cols = 0;
-  int rows = 0;
-  Mat output = Mat::zeros(Size(640, 480), CV_8UC3);
-  while (cols < 640 && rows < 480) {
-    int len = 0;
-    rc = read(fd, buf, sizeof(buf));
-    
-    if ((rc < 0) && (errno == EINTR))
-      continue;
-    
-    if (rc < 0) {
-      perror("allread() failed to read");
-      exit(1);
-    }
-    
-    if (rc == 0) {
-      fprintf(stderr, "Reached read EOF.\n");
-      exit(0);
-    }
-    cout << "Number of bytes read: " << rc;
-    while (len < rc) {
-      Vec3b &intensity = output.at<Vec3b>(rows, cols);
-      for(int k = 0; k < 3; k++) {
-        intensity.val[k] = int(buf[len + k]);
+  while (1) {
+    int cols = 0;
+    int rows = 0;
+    Mat frame = Mat::zeros(Size(frame_width, frame_height), CV_8UC3);
+    while (cols < frame_width && rows < frame_height) {
+      int len = 0;
+      rc = read(fd, buf, sizeof(buf));
+      
+      if ((rc < 0) && (errno == EINTR))
+        continue;
+      
+      if (rc < 0) {
+        perror("allread() failed to read");
+        exit(1);
       }
-      // cout << "reading [" << cols << ", " << rows << "]" << endl;
-      rows++;
-      len = len + 4;
-      if (rows == 480) {
-        rows = 0;
-        cols++;
+      
+      if (rc == 0) {
+        fprintf(stderr, "Reached read EOF.\n");
+        exit(0);
+      }
+      // cout << "Number of bytes read: " << rc;
+      while (len < rc) {
+        Vec3b &intensity = output.at<Vec3b>(rows, cols);
+        for(int k = 0; k < 3; k++) {
+          intensity.val[k] = int(buf[len + k]);
+        }
+        // cout << "reading [" << cols << ", " << rows << "]" << endl;
+        rows++;
+        len = len + 4;
+        if (rows == frame_height) {
+          rows = 0;
+          cols++;
 
-        if (cols == 640) break;
+          if (cols == frame_width) break;
+        }
       }
     }
+    cout << "Done 1 frame" << endl;
+    video.write(frame);
   }
-  imwrite("output.jpg", output);
-  cout << "DONE!";
   exit(0);
 }
 /* 

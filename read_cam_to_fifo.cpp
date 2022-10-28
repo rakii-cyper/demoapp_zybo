@@ -39,20 +39,33 @@ int main(int argc, char *argv[]) {
   }
 
   // config_console(); // Configure standard input not to wait for CR
-   
-  Mat image;//taking an image matrix//
-  image = imread("M8876_640_480.jpg");//loading an image//
-  cout << image.cols << "x" << image.rows << endl;   
-  for (int i = 0; i < image.cols; i++) {
-     for (int j = 0; j < image.rows; j++) {
-        buf[number_of_bytes++] = image.at<Vec3b>(j, i)[0];
-        buf[number_of_bytes++] = image.at<Vec3b>(j, i)[1];
-        buf[number_of_bytes++] = image.at<Vec3b>(j, i)[2];
-        buf[number_of_bytes++] = '0';
-	}
+  VideoCapture cap(0); 
+    
+  // Check if camera opened successfully
+  if(!cap.isOpened()){
+    cout << "Error opening video stream or file" << endl;
+    return -1;
   }
-  allwrite(fd, buf, number_of_bytes);
-  cout << number_of_bytes << endl;
+
+  while (1) {
+    Mat frame; //taking an frame matrix//
+    cap >> frame; //loading an frame//
+    // cout << frame.cols << "x" << frame.rows << endl;   
+    if (frame.empty())
+      break;
+
+    for (int i = 0; i < frame.cols; i++) {
+      for (int j = 0; j < frame.rows; j++) {
+          buf[number_of_bytes++] = frame.at<Vec3b>(j, i)[0];
+          buf[number_of_bytes++] = frame.at<Vec3b>(j, i)[1];
+          buf[number_of_bytes++] = frame.at<Vec3b>(j, i)[2];
+          buf[number_of_bytes++] = '0';
+      } 
+    }
+
+    allwrite(fd, buf, number_of_bytes);
+    cout << number_of_bytes << endl;
+  }
   /* while (1) {
     // Read from standard input = file descriptor 0
     rc = read(0, buf, sizeof(buf));
