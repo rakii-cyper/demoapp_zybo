@@ -20,7 +20,7 @@ void config_console();
 int main(int argc, char *argv[]) {
 
   int fd, rc;
-
+  int count_frame = 0;
   if (argc!=2) {
     fprintf(stderr, "Usage: %s devfile\n", argv[0]);
     exit(1);
@@ -62,10 +62,11 @@ int main(int argc, char *argv[]) {
           buf[number_of_bytes++] = '0';
       } 
     }
-
+    count_frame++;
     allwrite(fd, buf, number_of_bytes);
     // cout << "Send 1 frame" << endl;
   }
+  cout << "Number of frames: " << count_frame;
   /* while (1) {
     // Read from standard input = file descriptor 0
     rc = read(0, buf, sizeof(buf));
