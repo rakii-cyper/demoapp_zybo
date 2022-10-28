@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     cout << "Done 1 frame" << endl;
 
     string name_frame = "frame" + convert.str() + ".png";
-    imread(name_frame, frame);
+    imwrite(name_frame, frame);
     video.write(frame);
   }
   exit(0);
