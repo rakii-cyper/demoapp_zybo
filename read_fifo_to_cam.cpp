@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  imwrite("output.png", output);
+  imwrite("output.jpg", output);
   cout << "DONE!";
   exit(0);
 }
