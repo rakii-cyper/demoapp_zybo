@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   int frame_width = 640;
   int frame_height = 480;
   int count_frame = 0;
-  VideoWriter video("outcpp.avi", cv::VideoWriter::fourcc('M','J','P','G'), 10, Size(frame_width, frame_height));
+  VideoWriter video("outcpp.avi", cv::VideoWriter::fourcc('M','J','P','G'), 30, Size(frame_width, frame_height));
   
   if (argc!=2) {
     fprintf(stderr, "Usage: %s devfile\n", argv[0]);
