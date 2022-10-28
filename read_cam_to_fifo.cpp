@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     }
 
     allwrite(fd, buf, number_of_bytes);
-    cout << "Send 1 frame" << endl;
+    // cout << "Send 1 frame" << endl;
   }
   /* while (1) {
     // Read from standard input = file descriptor 0

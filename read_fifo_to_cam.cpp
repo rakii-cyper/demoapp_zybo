@@ -96,11 +96,11 @@ int main(int argc, char *argv[]) {
     count_frame++;
     ostringstream convert;
     convert << count_frame;
-    cout << "Done 1 frame" << endl;
+    // cout << "Done 1 frame" << endl;
 
-    string name_frame = "frame" + convert.str() + ".png";
+    string name_frame = "./frame/frame" + convert.str() + ".png";
     imwrite(name_frame, frame);
-    video.write(frame);
+    // video.write(frame);
   }
   exit(0);
 }
