@@ -83,6 +83,8 @@ int main(int argc, char *argv[]) {
     }
   }
   imwrite("output.png", output);
+  cout << "DONE!";
+  exit();
 }
 /* 
    Plain write() may not write all bytes requested in the buffer, so
