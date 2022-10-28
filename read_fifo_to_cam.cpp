@@ -8,6 +8,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 using namespace cv;
