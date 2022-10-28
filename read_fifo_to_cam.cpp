@@ -70,17 +70,17 @@ int main(int argc, char *argv[]) {
 
     while (len < rc) {
       len = len + 4;
-      Vec3b &intensity = output.at<Vec3b>(rows, cols);
+      Vec3b &intensity = output.at<Vec3b>(cols, rows);
       for(int k = 0; k < 3; k++) {
         intensity.val[k] = int(buf[len + k]);
       }
       cout << "reading [" << cols << ", " << rows << "]" << endl;
-      rows++;
-      if (rows > 480) {
-        rows = 0;
-        cols++;
+      cols++;
+      if (cols == 640) {
+        cols = 0;
+        rows++;
 
-        if (cols > 640) break;
+        if (rows == 480) break;
       }
     }
   }
