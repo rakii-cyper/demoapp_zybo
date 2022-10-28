@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   int cols = 0;
   int rows = 0;
   Mat output = Mat::zeros(Size(640, 480), CV_8UC3);
-  while (cols <= 640 && rows <= 480) {
+  while (cols < 640 && rows < 480) {
     int len = 0;
     rc = read(fd, buf, sizeof(buf));
     
