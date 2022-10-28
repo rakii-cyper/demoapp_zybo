@@ -82,6 +82,7 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+  imwrite("output.png", output);
 }
 /* 
    Plain write() may not write all bytes requested in the buffer, so
