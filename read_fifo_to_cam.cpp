@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 
     while (len < rc) {
       len = len + 4;
-      Vec3b &intensity = output.at<Vec3b>(cols, rows);
+      Vec3b &intensity = output.at<Vec3b>(rows, cols);
       for(int k = 0; k < 3; k++) {
         intensity.val[k] = int(buf[len + k]);
       }
