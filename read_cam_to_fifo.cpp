@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
   int fd, rc;
   int number_of_bytes = 0;
-  unsigned char buf[1228801];
+  unsigned char buf[1228800];
 
   if (argc!=2) {
     fprintf(stderr, "Usage: %s devfile\n", argv[0]);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
    
   Mat image;//taking an image matrix//
   image = imread("M8876_640_480.jpg");//loading an image//
-   
+  cout << image.cols << "x" << image.rows << endl;   
   for (int i = 0; i < image.cols; i++) {
      for (int j = 0; j < image.rows; j++) {
         buf[number_of_bytes++] = image.at<Vec3b>(j, i)[0];
