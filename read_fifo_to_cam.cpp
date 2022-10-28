@@ -56,23 +56,26 @@ int main(int argc, char *argv[]) {
   while (1) {
     int cols = 0;
     int rows = 0;
+    int len = 0;
     Mat frame = Mat::zeros(Size(frame_width, frame_height), CV_8UC3);
     while (cols < frame_width && rows < frame_height) {
-      int len = 0;
-      rc = read(fd, buf, sizeof(buf));
-      
-      if ((rc < 0) && (errno == EINTR))
+      if !(len < rc) {
+        len = 0;
+        rc = read(fd, buf, sizeof(buf));
+        if ((rc < 0) && (errno == EINTR))
         continue;
       
-      if (rc < 0) {
-        perror("allread() failed to read");
-        exit(1);
+        if (rc < 0) {
+          perror("allread() failed to read");
+          exit(1);
+        }
+        
+        if (rc == 0) {
+          fprintf(stderr, "Reached read EOF.\n");
+          exit(0);
+        }
       }
       
-      if (rc == 0) {
-        fprintf(stderr, "Reached read EOF.\n");
-        exit(0);
-      }
       // cout << "Number of bytes read: " << rc;
       while (len < rc) {
         Vec3b &intensity = frame.at<Vec3b>(rows, cols);
