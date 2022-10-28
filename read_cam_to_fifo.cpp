@@ -20,8 +20,6 @@ void config_console();
 int main(int argc, char *argv[]) {
 
   int fd, rc;
-  int number_of_bytes = 0;
-  unsigned char buf[1228800];
 
   if (argc!=2) {
     fprintf(stderr, "Usage: %s devfile\n", argv[0]);
@@ -48,6 +46,8 @@ int main(int argc, char *argv[]) {
   }
 
   while (1) {
+    unsigned char buf[1228800];
+    int number_of_bytes = 0;
     Mat frame; //taking an frame matrix//
     cap >> frame; //loading an frame//
     // cout << frame.cols << "x" << frame.rows << endl;   
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     }
 
     allwrite(fd, buf, number_of_bytes);
-    cout << number_of_bytes << endl;
+    cout << "Send 1 frame" << endl;
   }
   /* while (1) {
     // Read from standard input = file descriptor 0
