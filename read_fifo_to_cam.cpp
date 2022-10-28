@@ -92,14 +92,15 @@ int main(int argc, char *argv[]) {
       }
     }
     count_frame++;
-    ostringstream convert;
-    convert << count_frame;
+    // ostringstream convert;
+    // convert << count_frame;
     // cout << "Done 1 frame" << endl;
 
-    string name_frame = "./frame/frame" + convert.str() + ".png";
-    imwrite(name_frame, frame);
-    // video.write(frame);
+    // string name_frame = "./frame/frame" + convert.str() + ".png";
+    // imwrite(name_frame, frame);
+    video.write(frame);
   }
+  count << "done with" << count_frame << "frame." << endl;
   exit(0);
 }
 /* 
