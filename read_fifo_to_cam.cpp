@@ -94,7 +94,9 @@ int main(int argc, char *argv[]) {
     ostringstream convert;
     convert << count_frame;
     cout << "Done 1 frame" << endl;
-    imread("frame"+convert.str()+".png", frame);
+
+    string name_frame = "frame" + convert.str() + ".png";
+    imread(name_frame, frame);
     video.write(frame);
   }
   exit(0);
