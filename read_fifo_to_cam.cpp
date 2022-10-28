@@ -30,7 +30,7 @@ void allwrite(int fd, unsigned char *buf, int len);
 int main(int argc, char *argv[]) {
 
   int fd, rc;
-  unsigned char buf[128];
+  unsigned char buf[1228801];
   
 
   if (argc!=2) {
@@ -73,6 +73,7 @@ int main(int argc, char *argv[]) {
       Vec3b &intensity = output.at<Vec3b>(rows, cols);
       for(int k = 0; k < 3; k++) {
         intensity.val[k] = int(buf[len + k]);
+        cout << "reading [" << cols << ", " << rows "]" << endl;
       }
       rows++;
       if (rows > 480) {
