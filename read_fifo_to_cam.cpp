@@ -74,13 +74,13 @@ int main(int argc, char *argv[]) {
         intensity.val[k] = int(buf[len + k]);
       }
       // cout << "reading [" << cols << ", " << rows << "]" << endl;
-      cols++;
+      rows++;
       len = len + 4;
-      if (cols == 640) {
-        cols = 0;
-        rows++;
+      if (rows == 480) {
+        rows = 0;
+        cols++;
 
-        if (rows == 480) break;
+        if (cols == 640) break;
       }
     }
   }
