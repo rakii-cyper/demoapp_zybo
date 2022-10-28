@@ -5,7 +5,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include<opencv2/highgui/highgui.hpp>
 
+using namespace std;
+using namespace cv;
 /* streamread.c -- Demonstrate read from a Xillybus FIFO.
    
 This simple command-line application is given one argument: The device
@@ -44,7 +47,11 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  while (1) {
+  int cols = 0;
+  int rows = 0;
+  Mat output = Mat::zeros(Size(640, 480), CV_8UC3);
+  while (cols <= 640 && rows <= 480) {
+    int len = 0;
     rc = read(fd, buf, sizeof(buf));
     
     if ((rc < 0) && (errno == EINTR))
@@ -59,14 +66,23 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Reached read EOF.\n");
       exit(0);
     }
- 
-    // Write all data to standard output = file descriptor 1
-    // rc contains the number of bytes that were read.
 
-    allwrite(1, buf, rc);
+    while (len < rc) {
+      len = len + 4;
+      Vec3b &intensity = output.at<Vec3b>(rows, cols);
+      for(int k = 0; k < image.channels(); k++) {
+        intensity.val[k] = int(buf[len + k]);
+      }
+      rows++;
+      if (rows > 480) {
+        rows = 0;
+        cols++;
+
+        if (cols > 640) break;
+      }
+    }
   }
 }
-
 /* 
    Plain write() may not write all bytes requested in the buffer, so
    allwrite() loops until all data was indeed written, or exits in
