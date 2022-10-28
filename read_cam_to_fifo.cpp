@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
   int fd, rc;
   int number_of_bytes = 0;
-  unsigned char buf[1228800];
+  unsigned char buf[1228801];
 
   if (argc!=2) {
     fprintf(stderr, "Usage: %s devfile\n", argv[0]);
@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
 	}
   }
   allwrite(fd, buf, number_of_bytes);
+  cout << number_of_bytes << endl;
   /* while (1) {
     // Read from standard input = file descriptor 0
     rc = read(0, buf, sizeof(buf));
