@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   }
 
   // config_console(); // Configure standard input not to wait for CR
-  VideoCapture cap(0); 
+  VideoCapture cap("test.avi"); 
     
   // Check if camera opened successfully
   if(!cap.isOpened()){
