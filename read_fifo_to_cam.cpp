@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
       }
       // cout << "Number of bytes read: " << rc;
       while (len < rc) {
-        Vec3b &intensity = output.at<Vec3b>(rows, cols);
+        Vec3b &intensity = frame.at<Vec3b>(rows, cols);
         for(int k = 0; k < 3; k++) {
           intensity.val[k] = int(buf[len + k]);
         }
