@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
     int len = 0;
     Mat frame = Mat::zeros(Size(frame_width, frame_height), CV_8UC3);
     while (cols < frame_width && rows < frame_height) {
-      if !(len < rc) {
+      if (len >= rc) {
         len = 0;
         rc = read(fd, buf, sizeof(buf));
         if ((rc < 0) && (errno == EINTR))
