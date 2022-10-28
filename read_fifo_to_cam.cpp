@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
+#include <string>
 
 using namespace std;
 using namespace cv;
@@ -89,8 +90,10 @@ int main(int argc, char *argv[]) {
       }
     }
     count++;
+    ostringstream convert;
+    convert << count;
     cout << "Done 1 frame" << endl;
-    imread("frame"+str(count)+".png", frame);
+    imread("frame"+convert.str()+".png", frame);
     video.write(frame);
   }
   exit(0);
