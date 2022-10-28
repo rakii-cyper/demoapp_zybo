@@ -5,7 +5,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include<opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
@@ -84,7 +85,7 @@ int main(int argc, char *argv[]) {
   }
   imwrite("output.png", output);
   cout << "DONE!";
-  exit();
+  exit(0);
 }
 /* 
    Plain write() may not write all bytes requested in the buffer, so
