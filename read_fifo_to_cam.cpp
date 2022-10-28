@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
     // imwrite(name_frame, frame);
     video.write(frame);
   }
-  count << "done with" << count_frame << "frame." << endl;
+  cout << "done with" << count_frame << "frame." << endl;
   exit(0);
 }
 /* 
