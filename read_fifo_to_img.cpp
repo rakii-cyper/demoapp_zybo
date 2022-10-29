@@ -67,13 +67,13 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Reached read EOF.\n");
       exit(0);
     }
-    cout << "Number of bytes read: " << rc;
+    cout << "Number of bytes read: " << rc << endl;
     while (len < rc) {
       Vec3b &intensity = output.at<Vec3b>(rows, cols);
       for(int k = 0; k < 1; k++) {
         intensity.val[k] = int(buf[len + k]);
       }
-      cout << "reading [" << cols << ", " << rows << "]" << endl;
+      // cout << "reading [" << cols << ", " << rows << "]" << endl;
       rows++;
       len = len + 4;
       if (rows == 480) {
