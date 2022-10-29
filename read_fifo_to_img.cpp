@@ -69,10 +69,11 @@ int main(int argc, char *argv[]) {
     }
     cout << "Number of bytes read: " << rc << endl;
     while (len < rc) {
-      Vec3b &intensity = output.at<Vec3b>(rows, cols);
+      output.at<uchar>(rows, cols) = (int)buf[len];
+      /* Vec3b &intensity = output.at<Vec3b>(rows, cols);
       for(int k = 0; k < 1; k++) {
         intensity.val[k] = int(buf[len + k]);
-      }
+      } */
       // cout << "reading [" << cols << ", " << rows << "]" << endl;
       rows++;
       len = len + 4;
