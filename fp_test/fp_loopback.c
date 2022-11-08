@@ -129,7 +129,7 @@ void *write_to_fifo(void* arg) {
   struct arg_struct *arguments = (struct arg_struct *) arg;
   int fd;
   float buf[NUMBER_OF_FRAME];
-
+  printf("WRITING!!!\n");
   // initial variables for listing root direction reading input file
   DIR *dp;
   struct dirent *ep;  
