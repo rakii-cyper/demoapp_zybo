@@ -156,4 +156,5 @@ void *write_to_fifo(void* arg) {
   fclose(fp);
   if (line)
     free(line);
+  exit(0);
 }
