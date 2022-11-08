@@ -9,6 +9,7 @@
 #include <termio.h>
 #include <signal.h>
 #include <pthread.h>
+#include <string.h>
 
 #define NUMBER_OF_FRAME 128
 
@@ -108,6 +109,7 @@ void write_to_fifo(void* arg) {
   char * line = NULL;
   size_t len = 0;
   ssize_t read_cnt;
+  int counter = 0;
 
   fp = fopen(arguments->file_name, "r");
   fd = open(arguments->device_name, O_WRONLY);
@@ -127,8 +129,13 @@ void write_to_fifo(void* arg) {
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
     // Read from standard input = file descriptor 0
-    printf("Retrieved line of length %zu:\n", read_cnt);
-    printf("%s", line);
+    if (read_cnt != 0) {
+      line[strlen(line)-1] = '\0';
+      buf[counter++] = atof(line);
+      print("%f\n", buf[counter-1])
+    }
+    // printf("Retrieved line of length %zu:\n", read_cnt);
+    // printf("%s", line);
     // allwrite(fd, buf, rc);
   }
   fclose(fp);
