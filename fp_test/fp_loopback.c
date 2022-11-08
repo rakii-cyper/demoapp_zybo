@@ -78,6 +78,7 @@ void allwrite(int fd, float *buf, int len) {
 
 void *read_from_fifo(void* arg) {
   char *device_name = (char *) (arg);
+  printf("%s", device_name);
   int fd, rc;
   float buf[NUMBER_OF_FRAME];
   
