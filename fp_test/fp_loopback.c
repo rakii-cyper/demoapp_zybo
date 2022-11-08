@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#define _XOPEN_SOURCE 700
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -12,7 +13,7 @@
 #include <string.h>
 #include <semaphore.h>
 #include <sys/mman.h>
-#include <tinydir.h>
+#include <dirent.h>
 
 #define NUMBER_OF_FRAME 128
 
@@ -33,25 +34,22 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Usage: %s read_devfile write_devfile input_root_dir\n", argv[0]);
     exit(1);
   }
-  tinydir_dir dir;
-  tinydir_open(&dir, argv[3]);
-
-  while (dir.has_next)
+  DIR *dp;
+  struct dirent *ep;     
+  dp = opendir (argv[3]);
+  if (dp != NULL)
   {
-      tinydir_file file;
-      tinydir_readfile(&dir, &file);
-
-      printf("%s", file.name);
-      if (file.is_dir)
-      {
-          printf("/");
-      }
-      printf("\n");
-
-      tinydir_next(&dir);
+    while ((ep = readdir (dp)) != NULL)
+      puts (ep->d_name);
+          
+    (void) closedir (dp);
+    return 0;
   }
-
-tinydir_close(&dir);
+  else
+  {
+    perror ("Couldn't open the directory");
+    return -1;
+  }
   // arg.device_name = argv[2];
   // arg.root_dir_path = argv[3];
   // // write_to_fifo((void *) &arg);
