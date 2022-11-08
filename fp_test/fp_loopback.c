@@ -187,6 +187,6 @@ void *write_to_fifo(void* arg) {
     return NULL;
   } else {
     perror ("Couldn't open the directory");
-    exit(-1)
+    exit(-1);
   }
 }
