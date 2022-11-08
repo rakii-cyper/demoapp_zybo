@@ -163,5 +163,5 @@ void *write_to_fifo(void* arg) {
   if (line)
     free(line);
   printf("DONE WRITING!!!\n");
-  exit(0);
+  return;
 }
