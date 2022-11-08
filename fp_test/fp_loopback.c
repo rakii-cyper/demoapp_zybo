@@ -150,14 +150,6 @@ void *write_to_fifo(void* arg) {
     exit(1);
   }
 
-  if (fd1 < 0) {
-    if (errno == ENODEV)
-      fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name_1);
-
-    perror("Failed to open write devfile");
-    exit(1);
-  }
-
   if (fp == NULL) {
     perror("Failed to open input file");
     exit(1);
@@ -179,6 +171,14 @@ void *write_to_fifo(void* arg) {
   fp = fopen(arguments->file_name_1, "r");
   counter = 0;
   len = 0;
+
+  if (fd1 < 0) {
+    if (errno == ENODEV)
+      fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name_1);
+
+    perror("Failed to open write devfile");
+    exit(1);
+  }
 
   if (fp == NULL) {
     perror("Failed to open input file");
