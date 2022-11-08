@@ -85,6 +85,7 @@ void *read_from_fifo(void* arg) {
   char *device_name = (char *) (arg);
   int fd, rc;
   int counter = 0;
+  int read_time_cnt = 1;
   float buf[NUMBER_OF_FRAME];
   
   fd = open(device_name, O_RDONLY);
@@ -97,11 +98,13 @@ void *read_from_fifo(void* arg) {
     exit(1);
   }
 
-  while (counter < NUMBER_OF_FRAME * 2) {
+  while (read_time_cnt < 2) {
     rc = read(fd, buf, sizeof(buf));
     counter += (int) rc / 4;
-    if (counter > NUMBER_OF_FRAME)
+    if (counter > NUMBER_OF_FRAME) {
       counter = (int) rc / 4;
+      read_time_cnt++;
+    }
     printf("Read %d bytes.\n", counter);
     
     if ((rc < 0) && (errno == EINTR))
