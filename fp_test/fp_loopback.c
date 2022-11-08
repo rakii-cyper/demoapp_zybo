@@ -172,6 +172,7 @@ void *write_to_fifo(void* arg) {
   }
   allwrite(fd0, buf, counter*4);
   fclose(fp);
+  close(fd0);
   if (line)
     free(line);
 
@@ -192,6 +193,7 @@ void *write_to_fifo(void* arg) {
   }
   allwrite(fd1, buf, counter*4);
   fclose(fp);
+  close(fd1);
   if (line)
     free(line);
 
