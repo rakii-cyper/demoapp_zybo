@@ -97,7 +97,7 @@ void *read_from_fifo(void* arg) {
     exit(1);
   }
 
-  while (counter < NUMBER_OF_FRAME * 2) {
+  while (1) {
     rc = read(fd, buf, sizeof(buf));
     counter += (int) rc / 4;
     printf("Read %d bytes.\n", counter);
@@ -185,7 +185,6 @@ void *write_to_fifo(void* arg) {
   }
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
-    printf("RERUN\n");
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
