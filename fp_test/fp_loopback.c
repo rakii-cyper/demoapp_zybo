@@ -117,6 +117,7 @@ void *read_from_fifo(void* arg) {
     allwrite(1, buf, rc);
   }
   printf("DONE READING!!!\n");
+  return NULL;
 }
 
 void *write_to_fifo(void* arg) {
@@ -163,5 +164,5 @@ void *write_to_fifo(void* arg) {
   if (line)
     free(line);
   printf("DONE WRITING!!!\n");
-  return;
+  return NULL;
 }
