@@ -116,7 +116,7 @@ void config_console() {
   if (ioctl(0, TCGETA, &console_attributes) != -1) {
     // If we got here, we're reading from console
 
-    console_attributes.c_lflag &= ~ICANON; // Turn off canonical mode
+    // console_attributes.c_lflag &= ~ICANON; // Turn off canonical mode
     console_attributes.c_cc[VMIN] = 1; // One character at least
     console_attributes.c_cc[VTIME] = 0; // No timeouts
 
