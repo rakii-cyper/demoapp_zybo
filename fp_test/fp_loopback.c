@@ -97,7 +97,7 @@ void *read_from_fifo(void* arg) {
     exit(1);
   }
 
-  while (counter < NUMBER_OF_FRAME) {
+  while (counter < NUMBER_OF_FRAME * 2) {
     rc = read(fd, buf, sizeof(buf));
     counter += (int) rc / 4;
     printf("Read %d bytes.\n", counter);
@@ -164,7 +164,7 @@ void *write_to_fifo(void* arg) {
   allwrite(fd0, buf, counter*4);
   fclose(fp);
   close(fd0);
-  
+
   fd1 = open(arguments->device_name_1, O_WRONLY);
   fp = fopen(arguments->file_name_1, "r");
   counter = 0;
