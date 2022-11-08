@@ -141,7 +141,6 @@ void *write_to_fifo(void* arg) {
 
   fp = fopen(arguments->file_name_0, "r");
   fd0 = open(arguments->device_name_0, O_WRONLY);
-  fd1 = open(arguments->device_name_1, O_WRONLY);
   
   if (fd0 < 0) {
     if (errno == ENODEV)
@@ -176,6 +175,7 @@ void *write_to_fifo(void* arg) {
   if (line)
     free(line);
 
+  fd1 = open(arguments->device_name_1, O_WRONLY);
   fp = fopen(arguments->file_name_1, "r");
   counter = 0;
   len = 0;
