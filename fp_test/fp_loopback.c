@@ -133,7 +133,7 @@ void *write_to_fifo(void* arg) {
   // initial variables for listing root direction reading input file
   DIR *dp;
   struct dirent *ep;  
-
+  printf("%s", arguments->root_dir_path);
   dp = opendir (arguments->root_dir_path);
   fd = open(arguments->device_name, O_WRONLY);
 
