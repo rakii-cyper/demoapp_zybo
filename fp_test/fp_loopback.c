@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 
   arg->device_name = argv[2];
   arg->file_name = argv[3];
-  write_to_fifo(&arg);
+  write_to_fifo((void *) &arg);
 }
 
 void allwrite(int fd, float *buf, int len) {
@@ -120,7 +120,7 @@ void write_to_fifo(void* arg) {
   
   if (fd < 0) {
     if (errno == ENODEV)
-      fprintf(stderr, "(Maybe %s a read-only file?)\n", argv[1]);
+      fprintf(stderr, "(Maybe %s a read-only file?)\n", arg->device_name);
 
     perror("Failed to open devfile");
     exit(1);
@@ -133,7 +133,7 @@ void write_to_fifo(void* arg) {
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
     // Read from standard input = file descriptor 0
-    printf("Retrieved line of length %zu:\n", read);
+    printf("Retrieved line of length %zu:\n", read_cnt);
     printf("%s", line);
     // allwrite(fd, buf, rc);
   }
