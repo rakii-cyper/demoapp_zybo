@@ -21,7 +21,7 @@ See http://www.xillybus.com/doc/ for usage examples an information.
 
 */
 
-void allwrite(int fd, unsigned char *buf, int len);  
+void allwrite(int fd, float *buf, int len);  
 
 int main(int argc, char *argv[]) {
 
