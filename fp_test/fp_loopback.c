@@ -33,7 +33,19 @@ int main(int argc, char *argv[]) {
 
   arg.device_name = argv[2];
   arg.file_name = argv[3];
-  write_to_fifo((void *) &arg);
+  // write_to_fifo((void *) &arg);
+  if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) &argv[1])) {
+    perror("Failed to create thread");
+    exit(1);
+  }
+
+  if (pthread_create(&thread_id[1], NULL, write_to_fifo, (void *) &arg)) {
+    perror("Failed to create thread");
+    exit(1);
+  }
+
+  pthread_join(thread_id[0], NULL);
+  pthread_join(thread_id[1], NULL);
 }
 
 void allwrite(int fd, float *buf, int len) {
@@ -94,7 +106,7 @@ void read_from_fifo(void* arg) {
     // Write all data to standard output = file descriptor 1
     // rc contains the number of bytes that were read.
 
-    allwrite(1, buf, rc);
+    allwrite(1, buf, rc*4);
   }
 }
 
@@ -132,12 +144,11 @@ void write_to_fifo(void* arg) {
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
-      printf("%f\n", buf[counter-1]);
     }
     // printf("Retrieved line of length %zu:\n", read_cnt);
     // printf("%s", line);
-    // allwrite(fd, buf, rc);
   }
+  allwrite(fd, buf, counter*4);
   fclose(fp);
   if (line)
     free(line);
