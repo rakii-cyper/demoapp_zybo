@@ -19,8 +19,8 @@ struct arg_struct {
 };
 
 void allwrite(int fd, float *buf, int len);
-void read_from_fifo(void *arg);
-void write_to_fifo(void *arg);
+void *read_from_fifo(void *arg);
+void *write_to_fifo(void *arg);
 
 int main(int argc, char *argv[]) {
   pthread_t thread_id[2];
@@ -72,7 +72,7 @@ void allwrite(int fd, float *buf, int len) {
   }
 } 
 
-void read_from_fifo(void* arg) {
+void *read_from_fifo(void* arg) {
   char *device_name = (char *) (arg);
   int fd, rc;
   float buf[NUMBER_OF_FRAME];
@@ -110,7 +110,7 @@ void read_from_fifo(void* arg) {
   }
 }
 
-void write_to_fifo(void* arg) {
+void *write_to_fifo(void* arg) {
   // initial variables for writing to fifo
   struct arg_struct *arguments = (struct arg_struct *) arg;
   int fd, rc;
