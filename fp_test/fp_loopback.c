@@ -114,7 +114,7 @@ void *read_from_fifo(void* arg) {
     // Write all data to standard output = file descriptor 1
     // rc contains the number of bytes that were read.
     for (int i=0; i < counter; i++){
-      printf("Value: %f", atof(buf[i]));
+      printf("Value: %f", buf[i]);
     }
   }
   printf("DONE READING!!!\n");
