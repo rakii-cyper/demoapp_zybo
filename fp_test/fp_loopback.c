@@ -10,6 +10,8 @@
 #include <signal.h>
 #include <pthread.h>
 #include <string.h>
+#include <semaphore.h>
+#include <sys/mman.h>
 
 #define NUMBER_OF_FRAME 128
 
