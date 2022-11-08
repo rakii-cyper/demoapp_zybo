@@ -132,7 +132,7 @@ void write_to_fifo(void* arg) {
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
-      print("%f\n", buf[counter-1])
+      print("%f\n", buf[counter-1]);
     }
     // printf("Retrieved line of length %zu:\n", read_cnt);
     // printf("%s", line);
