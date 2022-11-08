@@ -77,8 +77,8 @@ void allwrite(int fd, float *buf, int len) {
 } 
 
 void *read_from_fifo(void* arg) {
+  printf("READING!!!");
   char *device_name = (char *) (arg);
-  printf("%s", device_name);
   int fd, rc;
   float buf[NUMBER_OF_FRAME];
   
@@ -113,10 +113,12 @@ void *read_from_fifo(void* arg) {
 
     allwrite(1, buf, rc*4);
   }
+  printf("DONE READING!!!");
 }
 
 void *write_to_fifo(void* arg) {
   // initial variables for writing to fifo
+  printf("WRITING!!!");
   struct arg_struct *arguments = (struct arg_struct *) arg;
   int fd;
   float buf[NUMBER_OF_FRAME];
@@ -157,5 +159,6 @@ void *write_to_fifo(void* arg) {
   fclose(fp);
   if (line)
     free(line);
+  printf("DONE WRITING!!!");
   exit(0);
 }
