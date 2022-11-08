@@ -97,9 +97,11 @@ void *read_from_fifo(void* arg) {
     exit(1);
   }
 
-  while (1) {
+  while (counter < NUMBER_OF_FRAME * 2) {
     rc = read(fd, buf, sizeof(buf));
     counter += (int) rc / 4;
+    if (counter > NUMBER_OF_FRAME)
+      counter = (int) rc / 4;
     printf("Read %d bytes.\n", counter);
     
     if ((rc < 0) && (errno == EINTR))
