@@ -134,7 +134,7 @@ void *write_to_fifo(void* arg) {
   DIR *dp;
   struct dirent *ep;  
 
-  dp = opendir(arguments->root_dir_path);
+  dp = opendir (arguments->root_dir_path);
   fd = open(arguments->device_name, O_WRONLY);
 
   if (fd < 0) {
@@ -156,8 +156,8 @@ void *write_to_fifo(void* arg) {
         ssize_t read_cnt;
         int counter = 0;
 
-        char * file_name = "./";
-        strcat(file_name, arguments->root_dir_path);
+        char * file_name = NULL;
+        strcpy(file_name, arguments->root_dir_path);
         strcat(file_name, "/");
         strcat(file_name, ep->d_name);
         printf("%s", file_name);
