@@ -86,7 +86,7 @@ void *read_from_fifo(void* arg) {
   int fd, rc;
   int counter = 0;
   int read_time_cnt = 1;
-  float buf[NUMBER_OF_FRAME];
+  float buf;
   
   fd = open(device_name, O_RDONLY);
   
@@ -97,35 +97,40 @@ void *read_from_fifo(void* arg) {
     perror("Failed to open read devfile");
     exit(1);
   }
-
-  while (read_time_cnt < 2) {
+  while (1) {
     rc = read(fd, buf, sizeof(buf));
-    counter += (int) rc / 4;
-    if (counter > NUMBER_OF_FRAME) {
-      counter = (int) rc / 4;
-      read_time_cnt++;
-    }
-    printf("Read %d bytes.\n", counter);
-    
-    if ((rc < 0) && (errno == EINTR))
-      continue;
-    
-    if (rc < 0) {
-      perror("allread() failed to read");
-      exit(1);
-    }
-    
-    if (rc == 0) {
-      fprintf(stderr, "Reached read EOF.\n");
-      exit(0);
-    }
- 
-    // Write all data to standard output = file descriptor 1
-    // rc contains the number of bytes that were read.
-    for (int i=0; i < counter; i++){
-      printf("Value: %f \n", buf[i]);
-    }
+
+    if (rc > 0) 
+      printf("Value: %f \n", buf);
   }
+  // while (read_time_cnt < 2) {
+  //   rc = read(fd, buf, sizeof(buf));
+  //   counter += (int) rc / 4;
+  //   if (counter > NUMBER_OF_FRAME) {
+  //     counter = (int) rc / 4;
+  //     read_time_cnt++;
+  //   }
+  //   printf("Read %d bytes.\n", counter);
+    
+  //   if ((rc < 0) && (errno == EINTR))
+  //     continue;
+    
+  //   if (rc < 0) {
+  //     perror("allread() failed to read");
+  //     exit(1);
+  //   }
+    
+  //   if (rc == 0) {
+  //     fprintf(stderr, "Reached read EOF.\n");
+  //     exit(0);
+  //   }
+ 
+  //   // Write all data to standard output = file descriptor 1
+  //   // rc contains the number of bytes that were read.
+  //   for (int i=0; i < counter; i++){
+  //     printf("Value: %f \n", buf[i]);
+  //   }
+  // }
   printf("DONE READING!!!\n");
   return NULL;
 }
