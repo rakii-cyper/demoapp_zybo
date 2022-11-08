@@ -131,61 +131,61 @@ void *write_to_fifo(void* arg) {
   // initial variables for listing root direction reading input file
   DIR *dp;
   struct dirent *ep;  
-  printf("%s", arguments->root_dir_path);
-  dp = opendir (arguments->root_dir_path);
-  fd = open(arguments->device_name, O_WRONLY);
+  // printf("%s", arguments->root_dir_path);
+  // dp = opendir (arguments->root_dir_path);
+  // fd = open(arguments->device_name, O_WRONLY);
 
-  if (fd < 0) {
-    if (errno == ENODEV)
-      fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name);
+  // if (fd < 0) {
+  //   if (errno == ENODEV)
+  //     fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name);
 
-    perror("Failed to open write devfile");
-    exit(1);
-  }
+  //   perror("Failed to open write devfile");
+  //   exit(1);
+  // }
     
-  if (dp != NULL) {
-    while ((ep = readdir (dp)) != NULL) {
-      if (strcmp(ep->d_name, ".") != 0 || strcmp(ep->d_name, "..") != 0) {
-        // initial variables for reading input file
-        printf("START");
-        FILE * fp;
-        char * line = NULL;
-        size_t len = 0;
-        ssize_t read_cnt;
-        int counter = 0;
+  // if (dp != NULL) {
+  //   while ((ep = readdir (dp)) != NULL) {
+  //     if (strcmp(ep->d_name, ".") != 0 || strcmp(ep->d_name, "..") != 0) {
+  //       // initial variables for reading input file
+  //       printf("START");
+  //       FILE * fp;
+  //       char * line = NULL;
+  //       size_t len = 0;
+  //       ssize_t read_cnt;
+  //       int counter = 0;
 
-        char * file_name = NULL;
-        strcpy(file_name, arguments->root_dir_path);
-        strcat(file_name, "/");
-        strcat(file_name, ep->d_name);
-        printf("%s", file_name);
-        // fp = fopen(file_name, "r");
+  //       char * file_name = NULL;
+  //       strcpy(file_name, arguments->root_dir_path);
+  //       strcat(file_name, "/");
+  //       strcat(file_name, ep->d_name);
+  //       printf("%s", file_name);
+  //       // fp = fopen(file_name, "r");
 
-        // if (fp == NULL) {
-        //   perror("Failed to open input file");
-        //   exit(1);
-        // }
+  //       // if (fp == NULL) {
+  //       //   perror("Failed to open input file");
+  //       //   exit(1);
+  //       // }
 
-        // while ((read_cnt = getline(&line, &len, fp)) != -1) {
-        //   // Read from standard input = file descriptor 0
-        //   if (read_cnt != 0) {
-        //     line[strlen(line)-1] = '\0';
-        //     buf[counter++] = atof(line);
-        //   }
-        //   // printf("Retrieved line of length %zu:\n", read_cnt);
-        //   // printf("%s", line);
-        // }
-        // allwrite(fd, buf, counter*4);
-        // fclose(fp);
-        // if (line)
-        //   free(line);
-        // printf("DONE WRITING!!!\n");
-      }
-    }
-    (void) closedir (dp);
-    return NULL;
-  } else {
-    perror ("Couldn't open the directory");
-    exit(-1);
-  }
+  //       // while ((read_cnt = getline(&line, &len, fp)) != -1) {
+  //       //   // Read from standard input = file descriptor 0
+  //       //   if (read_cnt != 0) {
+  //       //     line[strlen(line)-1] = '\0';
+  //       //     buf[counter++] = atof(line);
+  //       //   }
+  //       //   // printf("Retrieved line of length %zu:\n", read_cnt);
+  //       //   // printf("%s", line);
+  //       // }
+  //       // allwrite(fd, buf, counter*4);
+  //       // fclose(fp);
+  //       // if (line)
+  //       //   free(line);
+  //       // printf("DONE WRITING!!!\n");
+  //     }
+  //   }
+  //   (void) closedir (dp);
+  //   return NULL;
+  // } else {
+  //   perror ("Couldn't open the directory");
+  //   exit(-1);
+  // }
 }
