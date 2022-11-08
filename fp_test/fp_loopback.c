@@ -99,7 +99,7 @@ void read_from_fifo(void* arg) {
 
 void write_to_fifo(void* arg) {
   // initial variables for writing to fifo
-  struct arg_struct *arguments = arg;
+  struct arg_struct *arguments = (struct arg_struct *) arg;
   int fd, rc;
   float buf[NUMBER_OF_FRAME];
 
