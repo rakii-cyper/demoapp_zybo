@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -15,15 +16,32 @@
 using namespace std;
 using namespace cv;
 
-void allwrite(int fd, unsigned char *buf, int len);  
-void read_from_fifo(void* device_name_to_read);
-void write_to_fifo(void* device_name_to_write);
+#define NUMBER_OF_FRAME 128
+
+struct arg_struct {
+    char *device_name;
+    char *file_name;
+};
+
+void allwrite(int fd, unsigned char *buf, int len);
+void read_from_fifo(void *arg);
+void write_to_fifo(void *arg);
 
 int main(int argc, char *argv[]) {
+  pthread_t thread_id[2];
+  struct arg_struct arg;
 
+  if (argc!=4) {
+    fprintf(stderr, "Usage: %s read_devfile write_devfile input_file\n", argv[0]);
+    exit(1);
+  }
+
+  arg->device_name = argv[2];
+  arg->file_name = argv[3];
+  write_to_fifo(&arg);
 }
 
-void allwrite(int fd, unsigned char *buf, int len) {
+void allwrite(int fd, float *buf, int len) {
   int sent = 0;
   int rc;
 
@@ -47,17 +65,12 @@ void allwrite(int fd, unsigned char *buf, int len) {
   }
 } 
 
-void read_from_fifo(void* device_name_to_read) {
+void read_from_fifo(void* arg) {
+  char *device_name = (char *) (arg);
   int fd, rc;
-  unsigned char buf[1228800];
+  float buf[NUMBER_OF_FRAME];
   
-
-  if (argc!=2) {
-    fprintf(stderr, "Usage: %s devfile\n", argv[0]);
-    exit(1);
-  }
-  
-  fd = open(argv[1], O_RDONLY);
+  fd = open(device_name, O_RDONLY);
   
   if (fd < 0) {
     if (errno == ENODEV)
@@ -67,11 +80,7 @@ void read_from_fifo(void* device_name_to_read) {
     exit(1);
   }
 
-  int cols = 0;
-  int rows = 0;
-  Mat output = Mat::zeros(Size(640, 480), CV_8UC1);
-  while (cols < 640 && rows < 480) {
-    int len = 0;
+  while (1) {
     rc = read(fd, buf, sizeof(buf));
     
     if ((rc < 0) && (errno == EINTR))
@@ -86,26 +95,49 @@ void read_from_fifo(void* device_name_to_read) {
       fprintf(stderr, "Reached read EOF.\n");
       exit(0);
     }
-    cout << "Number of bytes read: " << rc << endl;
-    while (len < rc) {
-      output.at<uchar>(rows, cols) = (int)buf[len];
-      /* Vec3b &intensity = output.at<Vec3b>(rows, cols);
-      for(int k = 0; k < 1; k++) {
-        intensity.val[k] = int(buf[len + k]);
-      } */
-      // cout << "reading [" << cols << ", " << rows << "]" << endl;
-      rows++;
-      len = len + 4;
-      if (rows == 480) {
-        rows = 0;
-        cols++;
+ 
+    // Write all data to standard output = file descriptor 1
+    // rc contains the number of bytes that were read.
 
-        if (cols == 640) break;
-      }
-    }
-  imwrite("output.jpg", output);
+    allwrite(1, buf, rc);
   }
-  imwrite("output.jpg", output);
-  cout << "DONE!";
-  exit(0);
+}
+
+void write_to_fifo(void* arg) {
+  // initial variables for writing to fifo
+  struct arg_struct *arguments = arg;
+  int fd, rc;
+  float buf[NUMBER_OF_FRAME];
+
+  // initial variables for reading input file
+  FILE * fp;
+  char * line = NULL;
+  size_t len = 0;
+  ssize_t read_cnt;
+
+  fp = fopen(arg->file_name, "r");
+  fd = open(arg->device_name, O_WRONLY);
+  
+  if (fd < 0) {
+    if (errno == ENODEV)
+      fprintf(stderr, "(Maybe %s a read-only file?)\n", argv[1]);
+
+    perror("Failed to open devfile");
+    exit(1);
+  }
+
+  if (fp == NULL) {
+    perror("Failed to open input file");
+    exit(1);
+  }
+
+  while ((read_cnt = getline(&line, &len, fp)) != -1) {
+    // Read from standard input = file descriptor 0
+    printf("Retrieved line of length %zu:\n", read);
+    printf("%s", line);
+    // allwrite(fd, buf, rc);
+  }
+  fclose(fp);
+  if (line)
+    free(line);
 }
