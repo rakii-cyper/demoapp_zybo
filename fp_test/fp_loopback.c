@@ -17,7 +17,7 @@ struct arg_struct {
     char *file_name;
 };
 
-void allwrite(int fd, unsigned char *buf, int len);
+void allwrite(int fd, float *buf, int len);
 void read_from_fifo(void *arg);
 void write_to_fifo(void *arg);
 
@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  arg->device_name = argv[2];
-  arg->file_name = argv[3];
+  arg.device_name = argv[2];
+  arg.file_name = argv[3];
   write_to_fifo((void *) &arg);
 }
 
