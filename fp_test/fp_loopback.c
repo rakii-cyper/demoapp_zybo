@@ -171,6 +171,7 @@ void *write_to_fifo(void* arg) {
   fp = fopen(arguments->file_name_1, "r");
   counter = 0;
   len = 0;
+  line = NULL;
 
   if (fd1 < 0) {
     if (errno == ENODEV)
@@ -186,6 +187,7 @@ void *write_to_fifo(void* arg) {
   }
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
+    printf("RERUN\n");
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
