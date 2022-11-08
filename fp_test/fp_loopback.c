@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   arg.device_name = argv[2];
   arg.file_name = argv[3];
   // write_to_fifo((void *) &arg);
-  if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) &argv[1])) {
+  if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) argv[1])) {
     perror("Failed to create thread");
     exit(1);
   }
