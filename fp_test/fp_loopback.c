@@ -10,12 +10,6 @@
 #include <signal.h>
 #include <pthread.h>
 
-#include<iostream>
-#include<opencv2/highgui/highgui.hpp>
-
-using namespace std;
-using namespace cv;
-
 #define NUMBER_OF_FRAME 128
 
 struct arg_struct {
