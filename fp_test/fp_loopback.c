@@ -93,7 +93,7 @@ void *read_from_fifo(void* arg) {
     exit(1);
   }
 
-  while (counter <= NUMBER_OF_FRAME) {
+  while (counter < NUMBER_OF_FRAME) {
     rc = read(fd, buf, sizeof(buf));
     counter += (int) rc / 4;
     printf("Read %d bytes.\n", counter);
@@ -114,7 +114,7 @@ void *read_from_fifo(void* arg) {
     // Write all data to standard output = file descriptor 1
     // rc contains the number of bytes that were read.
     for (int i=0; i < counter; i++){
-      printf("Value: %f", buf[i]);
+      printf("Value: %f \n", buf[i]);
     }
   }
   printf("DONE READING!!!\n");
