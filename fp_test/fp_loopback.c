@@ -48,6 +48,8 @@ int main(int argc, char *argv[]) {
 
   pthread_join(thread_id[0], NULL);
   pthread_join(thread_id[1], NULL);
+
+  return -1;
 }
 
 void allwrite(int fd, float *buf, int len) {
@@ -115,7 +117,7 @@ void *read_from_fifo(void* arg) {
 void *write_to_fifo(void* arg) {
   // initial variables for writing to fifo
   struct arg_struct *arguments = (struct arg_struct *) arg;
-  int fd, rc;
+  int fd;
   float buf[NUMBER_OF_FRAME];
 
   // initial variables for reading input file
