@@ -37,19 +37,19 @@ int main(int argc, char *argv[]) {
 
   arg.device_name = argv[2];
   arg.root_dir_path = argv[3];
-  // write_to_fifo((void *) &arg);
+  write_to_fifo((void *) &arg);
   // if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) argv[1])) {
   //   perror("Failed to create thread");
   //   exit(1);
   // }
 
-  if (pthread_create(&thread_id[1], NULL, write_to_fifo, (void *) &arg)) {
-    perror("Failed to create thread");
-    exit(1);
-  }
+  // if (pthread_create(&thread_id[1], NULL, write_to_fifo, (void *) &arg)) {
+  //   perror("Failed to create thread");
+  //   exit(1);
+  // }
 
-  // pthread_join(thread_id[0], NULL);
-  pthread_join(thread_id[1], NULL);
+  // // pthread_join(thread_id[0], NULL);
+  // pthread_join(thread_id[1], NULL);
 
   return -1;
 }
@@ -149,6 +149,7 @@ void *write_to_fifo(void* arg) {
     while ((ep = readdir (dp)) != NULL) {
       if (strcmp(ep->d_name, ".") != 0 || strcmp(ep->d_name, "..") != 0) {
         // initial variables for reading input file
+        printf("START");
         FILE * fp;
         char * line = NULL;
         size_t len = 0;
