@@ -16,8 +16,10 @@
 #define NUMBER_OF_FRAME 128
 
 struct arg_struct {
-    char *device_name;
-    char *file_name;
+    char *device_name_0;
+    char *device_name_1;
+    char *file_name_0;
+    char *file_name_1;
 };
 
 void allwrite(int fd, float *buf, int len);
@@ -29,12 +31,14 @@ int main(int argc, char *argv[]) {
   struct arg_struct arg;
 
   if (argc!=4) {
-    fprintf(stderr, "Usage: %s read_devfile write_devfile input_file\n", argv[0]);
+    fprintf(stderr, "Usage: %s read_devfile write_devfile_0 write_devfile_1 input_file_0 input_file_1\n", argv[0]);
     exit(1);
   }
 
-  arg.device_name = argv[2];
-  arg.file_name = argv[3];
+  arg.device_name_0 = argv[2];
+  arg.device_name_1 = argv[3];
+  arg.file_name_0 = argv[4];
+  arg.file_name_1 = argv[5];
   // write_to_fifo((void *) &arg);
   if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) argv[1])) {
     perror("Failed to create thread");
@@ -125,7 +129,7 @@ void *write_to_fifo(void* arg) {
   // initial variables for writing to fifo
   printf("WRITING!!!\n");
   struct arg_struct *arguments = (struct arg_struct *) arg;
-  int fd;
+  int fd0, fd1;
   float buf[NUMBER_OF_FRAME];
 
   // initial variables for reading input file
@@ -135,12 +139,21 @@ void *write_to_fifo(void* arg) {
   ssize_t read_cnt;
   int counter = 0;
 
-  fp = fopen(arguments->file_name, "r");
-  fd = open(arguments->device_name, O_WRONLY);
+  fp = fopen(arguments->file_name_0, "r");
+  fd0 = open(arguments->device_name_0, O_WRONLY);
+  fd1 = open(arguments->device_name_1, O_WRONLY);
   
-  if (fd < 0) {
+  if (fd0 < 0) {
     if (errno == ENODEV)
-      fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name);
+      fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name_0);
+
+    perror("Failed to open write devfile");
+    exit(1);
+  }
+
+  if (fd1 < 0) {
+    if (errno == ENODEV)
+      fprintf(stderr, "(Maybe %s a read-only file?)\n", arguments->device_name_1);
 
     perror("Failed to open write devfile");
     exit(1);
@@ -152,18 +165,36 @@ void *write_to_fifo(void* arg) {
   }
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
-    // Read from standard input = file descriptor 0
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
     }
-    // printf("Retrieved line of length %zu:\n", read_cnt);
-    // printf("%s", line);
   }
-  allwrite(fd, buf, counter*4);
+  allwrite(fd0, buf, counter*4);
   fclose(fp);
   if (line)
     free(line);
+
+  fp = fopen(arguments->file_name_1, "r");
+  counter = 0;
+  len = 0;
+
+  if (fp == NULL) {
+    perror("Failed to open input file");
+    exit(1);
+  }
+
+  while ((read_cnt = getline(&line, &len, fp)) != -1) {
+    if (read_cnt != 0) {
+      line[strlen(line)-1] = '\0';
+      buf[counter++] = atof(line);
+    }
+  }
+  allwrite(fd1, buf, counter*4);
+  fclose(fp);
+  if (line)
+    free(line);
+
   printf("DONE WRITING!!!\n");
   return NULL;
 }
