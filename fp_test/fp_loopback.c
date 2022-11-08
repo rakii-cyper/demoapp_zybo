@@ -12,12 +12,13 @@
 #include <string.h>
 #include <semaphore.h>
 #include <sys/mman.h>
+#include <tinydir.h>
 
 #define NUMBER_OF_FRAME 128
 
 struct arg_struct {
     char *device_name;
-    char *file_name;
+    char *root_dir_path;
 };
 
 void allwrite(int fd, float *buf, int len);
@@ -29,27 +30,45 @@ int main(int argc, char *argv[]) {
   struct arg_struct arg;
 
   if (argc!=4) {
-    fprintf(stderr, "Usage: %s read_devfile write_devfile input_file\n", argv[0]);
+    fprintf(stderr, "Usage: %s read_devfile write_devfile input_root_dir\n", argv[0]);
     exit(1);
   }
+  tinydir_dir dir;
+  tinydir_open(&dir, argv[3]);
 
-  arg.device_name = argv[2];
-  arg.file_name = argv[3];
-  // write_to_fifo((void *) &arg);
-  if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) argv[1])) {
-    perror("Failed to create thread");
-    exit(1);
+  while (dir.has_next)
+  {
+      tinydir_file file;
+      tinydir_readfile(&dir, &file);
+
+      printf("%s", file.name);
+      if (file.is_dir)
+      {
+          printf("/");
+      }
+      printf("\n");
+
+      tinydir_next(&dir);
   }
 
-  if (pthread_create(&thread_id[1], NULL, write_to_fifo, (void *) &arg)) {
-    perror("Failed to create thread");
-    exit(1);
-  }
+tinydir_close(&dir);
+  // arg.device_name = argv[2];
+  // arg.root_dir_path = argv[3];
+  // // write_to_fifo((void *) &arg);
+  // if (pthread_create(&thread_id[0], NULL, read_from_fifo, (void *) argv[1])) {
+  //   perror("Failed to create thread");
+  //   exit(1);
+  // }
 
-  pthread_join(thread_id[0], NULL);
-  pthread_join(thread_id[1], NULL);
+  // if (pthread_create(&thread_id[1], NULL, write_to_fifo, (void *) &arg)) {
+  //   perror("Failed to create thread");
+  //   exit(1);
+  // }
 
-  return -1;
+  // pthread_join(thread_id[0], NULL);
+  // pthread_join(thread_id[1], NULL);
+
+  // return -1;
 }
 
 void allwrite(int fd, float *buf, int len) {
@@ -135,7 +154,7 @@ void *write_to_fifo(void* arg) {
   ssize_t read_cnt;
   int counter = 0;
 
-  fp = fopen(arguments->file_name, "r");
+  fp = fopen(arguments->root_dir_path, "r");
   fd = open(arguments->device_name, O_WRONLY);
   
   if (fd < 0) {
