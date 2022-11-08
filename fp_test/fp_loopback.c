@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   pthread_t thread_id[2];
   struct arg_struct arg;
 
-  if (argc!=4) {
+  if (argc!=6) {
     fprintf(stderr, "Usage: %s read_devfile write_devfile_0 write_devfile_1 input_file_0 input_file_1\n", argv[0]);
     exit(1);
   }
