@@ -103,7 +103,7 @@ void *read_from_fifo(void* arg) {
 
     if (rc > 0) 
       for (int i = 0; i <= (int) rc / 4; i++)
-        printf("Value: %f \n", buf);
+        printf("Value: %f \n", buf[i]);
   }
   // while (read_time_cnt < 2) {
   //   rc = read(fd, buf, sizeof(buf));
