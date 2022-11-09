@@ -86,7 +86,7 @@ void *read_from_fifo(void* arg) {
   int fd, rc;
   int counter = 0;
   int read_time_cnt = 1;
-  float buf;
+  float buf[128];
   
   fd = open(device_name, O_RDONLY);
   
