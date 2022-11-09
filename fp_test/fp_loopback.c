@@ -174,6 +174,7 @@ void *write_to_fifo(void* arg) {
     }
   }
   allwrite(fd0, buf, counter*4);
+  printf("number of bytes write to fd0: %d", counter*4);
   fclose(fp);
   close(fd0);
 
@@ -197,13 +198,13 @@ void *write_to_fifo(void* arg) {
   }
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
-    printf("RERUN\n");
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
     }
   }
   allwrite(fd1, buf, counter*4);
+  printf("number of bytes write to fd1: %d", counter*4);
   fclose(fp);
   close(fd1);
   if (line)
