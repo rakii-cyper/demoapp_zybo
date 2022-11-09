@@ -174,7 +174,7 @@ void *write_to_fifo(void* arg) {
     }
   }
   allwrite(fd0, buf, counter*4);
-  printf("number of bytes write to fd0: %d", counter*4);
+  printf("number of bytes write to fd0: %d\n", counter*4);
   fclose(fp);
   close(fd0);
 
@@ -204,7 +204,7 @@ void *write_to_fifo(void* arg) {
     }
   }
   allwrite(fd1, buf, counter*4);
-  printf("number of bytes write to fd1: %d", counter*4);
+  printf("number of bytes write to fd1: %d\n", counter*4);
   fclose(fp);
   close(fd1);
   if (line)
