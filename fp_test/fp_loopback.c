@@ -97,6 +97,7 @@ void *read_from_fifo(void* arg) {
     perror("Failed to open read devfile");
     exit(1);
   }
+
   while (1) {
     rc = read(fd, buf, sizeof(buf));
 
@@ -195,6 +196,7 @@ void *write_to_fifo(void* arg) {
   }
 
   while ((read_cnt = getline(&line, &len, fp)) != -1) {
+    printf("RERUN\n");
     if (read_cnt != 0) {
       line[strlen(line)-1] = '\0';
       buf[counter++] = atof(line);
